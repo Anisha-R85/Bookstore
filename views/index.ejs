@@ -1,0 +1,22 @@
+<html lang="en">
+  <%- include('./partials/head.ejs') %> 
+<body>
+
+  <%- include('./partials/nav.ejs') %>
+
+  <div class="blogs content">
+
+    <h2>All Books</h2>
+    <% if (books.length > 0) { %>
+      <% books.forEach(book => { %>
+        <a href= "/books/<%= book._id %>">
+      <h3> <%= book.title %>  <%= book.author %> </h3>
+    </a> 
+      <% }) %>
+    <% } else { %>
+    <p>There are no books now..</p>
+    <% } %>
+        
+    <%- include('./partials/footer.ejs') %>
+</body>
+</html>

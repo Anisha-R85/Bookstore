@@ -1,0 +1,43 @@
+<html lang="en">
+<body>
+<h1>log in</h1>
+<div >
+    <form   >
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
+        <label for="password">Password:</label>
+        <input type="text" id="password" name="password" required>
+        <button>Submit</button>
+      </form>
+    </div>
+</body>
+</html>
+
+<script>
+const form = document.querySelector('form');
+form.addEventListener('submit', async (e)=> {
+  e.preventDefault();
+
+  const email = form.email.value;
+  const password = form.password.value;
+  
+  try{
+  const res = await fetch('/login', {
+    method:'POST',
+    body:JSON.stringify({email, password}),
+    headers: {'Content-Type':'application/json'}
+  });
+  const data = await res.json();
+  console.log(data);
+  if (data.user) {
+        location.assign('/books');
+      }
+
+  }
+  catch (err){
+    console.log(err);
+
+  }
+});
+
+</script>

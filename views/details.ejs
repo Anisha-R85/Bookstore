@@ -1,0 +1,59 @@
+<html lang="en">
+  <%- include('./partials/head.ejs') %> 
+<body>
+
+  <%- include('./partials/nav.ejs') %>
+<div class=edit>
+  <h2 id="edit1"><%= book.title %></h2>
+  <p id=edit2><%= book.snippet %></p>
+</div>
+<button type="button" id="delete" data-doc="<%= book._id %>">Delete</button>
+<button type="button" id="editbutton" data-doc="<%= book._id %>">Edit</button>
+<button type="button" id="done" data-doc="<%= book._id %>">Done</button>
+
+  <%- include('./partials/footer.ejs') %>
+
+  <script>
+    const trashcan = document.querySelector('button');
+    const editpen = document.getElementById("editbutton");
+    const heading = document.querySelector('.edit');
+    const done = document.getElementById("done");
+   
+    trashcan.addEventListener('click', (e) => {
+      const endpoint = `/books/${trashcan.dataset.doc}`;
+      fetch(endpoint, {
+        method: 'DELETE',
+      })
+      .then(response => response.json())
+      .then(data => window.location.href = data.redirect)
+      .catch(err=>console.log(err));
+    });
+
+    editpen.addEventListener('click',(e)=>{
+    heading.contentEditable = true;
+    heading.style.backgroundColor = "#dddbdb";
+    });
+
+    done.addEventListener('click',(e)=>{
+      heading.contentEditable = false;
+    heading.style.backgroundColor = " ";
+    const data1 = (document.getElementById("edit1")).innerText ;
+    const data2 = (document.getElementById("edit2")).innerText ;
+
+    const data = {
+      'title': data1, 'snippet': data2
+    };
+   
+     const endpoint = `/books/${done.dataset.doc}`;
+     fetch(endpoint, {
+       method: 'PUT',
+       headers: { 'Content-Type':'application/json' },
+       body: JSON.stringify(data)
+     })
+     .then(response => response.json())
+     .then(data => window.location.href = data.redirect)
+     .catch(err=>console.log(err));
+    });
+  </script>
+</body> 
+</html>
